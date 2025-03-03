@@ -6,6 +6,38 @@ methods {
     function totalSupply() external returns (uint) envfree;
 }
 
+rule totalSupplyAfterMintWithPrecondition(address account, uint256 amount) {
+    env e;
+
+    // Assume that in the current state, before minting,
+    // total supply of tokens >= user's balance
+    uint256 userBalanceBefore = balanceOf(account);
+    uint256 totalBefore = totalSupply();
+    require totalBefore >= userBalanceBefore;
+
+    mint(e, account, amount);
+
+    uint256 userBalanceAfter = balanceOf(account);
+    uint256 totalAfter = totalSupply();
+
+    assert totalAfter >= userBalanceAfter, "Total supply is less than a single user's balance";
+}
+
+// Total supply after mint is at least the balance of the receiving account
+rule totalSupplyAfterMint(address account, uint256 amount) {
+    env e;
+
+    uint256 userBalanceBefore = balanceOf(account);
+    uint256 totalBefore = totalSupply();
+
+    mint(e, account, amount);
+
+    uint256 userBalanceAfter = balanceOf(account);
+    uint256 totalAfter = totalSupply();
+
+    assert totalAfter >= userBalanceAfter, "Total supply is less than a single user's balance";
+}
+
 rule transferSpec(address recipient, uint amount) {
     env e;
 
