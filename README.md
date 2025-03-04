@@ -18,7 +18,7 @@ deactivate
 
 Run certora prover:
 ```
-certoraRun Empty.sol --verify Empty:sisters.spec --rule sistersBirthMonths
+certoraRun Empty.sol --verify Empty:sisters.spec --rule sistersBirthMonths --rule_sanity basic
 ```
 
 Run certora prover from a config file:
