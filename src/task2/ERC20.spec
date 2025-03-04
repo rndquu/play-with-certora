@@ -6,6 +6,32 @@ methods {
     function totalSupply() external returns (uint) envfree;
 }
 
+rule onlyHolderCanChangeAllowance(address holder, address spender, method f) {
+    // allowance before the method was called
+    mathint allowance_before = allowance(holder, spender);
+
+    env e;
+    calldataarg args; // arguments for the method `f()`
+    f(e, args);
+
+    // allowance after the method was called
+    mathint allowance_after = allowance(holder, spender);
+
+    assert allowance_after > allowance_before => e.msg.sender == holder,
+        "Only the sender can change its own allowance";
+
+    // assert that if the allowance was changed then `approve()` or 
+    // `increaseAllowance()` was called
+    assert(
+        allowance_after > allowance_before => (
+            f.selector == sig:approve(address, uint).selector ||
+            f.selector == sig:increaseAllowance(address, uint).selector
+        )
+    ),
+    "Only `approve()` and `increaseAllowance()` can increase allowances";
+}
+
+
 rule totalSupplyAfterMintWithPrecondition(address account, uint256 amount) {
     env e;
 
