@@ -20,3 +20,8 @@ Run certora prover:
 ```
 certoraRun Empty.sol --verify Empty:sisters.spec --rule sistersBirthMonths
 ```
+
+Run certora prover from a config file:
+```
+certoraRun sample.conf
+```
