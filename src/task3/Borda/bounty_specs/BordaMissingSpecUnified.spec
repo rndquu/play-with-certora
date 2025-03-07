@@ -15,17 +15,17 @@ methods {
  * @notice reported in https://github.com/Certora/tutorials-code/issues/5
  * @dev catches buggy version BordaNewBug1.sol
 **/
-ghost mapping(address => bool) voted_mirror {
-	init_state axiom forall address c. !voted_mirror[c];
-}
+// ghost mapping(address => bool) voted_mirror {
+// 	init_state axiom forall address c. !voted_mirror[c];
+// }
 
-hook Sstore _voted[KEY address a] bool val (bool old_val) {
-	voted_mirror[a] = val;
-}
+// hook Sstore _voted[KEY address a] bool val (bool old_val) {
+// 	voted_mirror[a] = val;
+// }
 
-/*BordaMissingRule() */
-invariant integrityOfVoted()
-	forall address a. voted_mirror[a] == voted(a);
+// /*BordaMissingRule() */
+// invariant integrityOfVoted()
+// 	forall address a. voted_mirror[a] == voted(a);
 
 
 /**

@@ -6,7 +6,7 @@
 **/
 
 pragma solidity ^0.8.0;
-import "../IBorda.sol";
+import "./IBorda.sol";
 
 contract Borda is IBorda {
 
